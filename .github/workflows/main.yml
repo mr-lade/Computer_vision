@@ -1,0 +1,24 @@
+# .github/workflows/nodejs.yml
+steps:
+  ...
+  - name: Unit Test
+    run: |
+      mkdir -p ~/.aws
+      touch ~/.aws/credentials
+
+      AWS_ACCESS_KEY_ID = AKIAZAA5EJ5I7KM4BZNK
+      AWS_SECRET_KEY_ID = ctx2bT5ow7pWwcCoR8LGlBAYnz8uRl9m4JacE0mu
+
+      echo "[default]
+      aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}
+      aws_secret_access_key = ${{ secrets.AWS_SECRET_KEY_ID }}
+      region = ${AWS_DEFAULT_REGION}
+
+      [github]
+      role_arn = arn:aws:iam::{accountID}:role/{role}
+      source_profile = default" > ~/.aws/credentials 
+
+      npm test
+    env:
+      AWS_DEFAULT_REGION: us-east-1
+      CI: true
